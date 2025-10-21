@@ -1,0 +1,27 @@
+[
+  {
+    "id": 1,
+    "title": "Pengumuman Mahasiswa Baru",
+    "body": "Pendaftaran mahasiswa baru tahun ajaran 2025 telah dibuka. Silakan kunjungi situs resmi universitas untuk informasi lebih lanjut."
+  },
+  {
+    "id": 2,
+    "title": "Jadwal Ujian Tengah Semester",
+    "body": "Ujian tengah semester akan dimulai pada tanggal 5 November. Pastikan untuk mempersiapkan diri dengan baik dan mengikuti jadwal yang telah ditentukan."
+  },
+  {
+    "id": 3,
+    "title": "Kegiatan Bakti Sosial",
+    "body": "Himpunan Mahasiswa akan mengadakan kegiatan bakti sosial di Desa Suka Maju pada tanggal 10 November. Diharapkan partisipasi aktif seluruh anggota."
+  },
+  {
+    "id": 4,
+    "title": "Perubahan Jadwal Kuliah",
+    "body": "Beberapa jadwal kuliah akan mengalami perubahan mulai minggu depan. Mohon periksa portal akademik masing-masing untuk jadwal terbaru."
+  },
+  {
+    "id": 5,
+    "title": "Pendaftaran Lomba Inovasi",
+    "body": "Lomba inovasi teknologi terbuka untuk seluruh mahasiswa. Pendaftaran dibuka hingga tanggal 20 November."
+  }
+]
