@@ -1,51 +1,113 @@
-import StudentsPage from "../components/StudentsPage";
-import { Tabs } from "antd"; // 🟢 Tambahkan ini
-import "antd/dist/reset.css"; // optional, pastikan style ant design termuat
+"use client";
 
-async function getPosts() {
-  const res = await fetch("http://localhost:3000/data/posts.json", {
+import React, { useEffect, useState } from "react";
+import { Tabs, Table, Spin, Button } from "antd";
+
+
+async function fetchStudentsStatic() {
+  const res = await fetch("https://jsonplaceholder.typicode.com/users", {
+    cache: "force-cache",
+  });
+  return res.json();
+}
+
+
+async function fetchPostsServerSide() {
+  const res = await fetch("https://jsonplaceholder.typicode.com/posts", {
     cache: "no-store",
   });
   return res.json();
 }
 
-export default async function Page() {
-  const posts = await getPosts();
+export default function StudentsPage() {
+  const [students, setStudents] = useState([]);
+  const [posts, setPosts] = useState([]);
+  const [loadingStudents, setLoadingStudents] = useState(true);
+  const [loadingPosts, setLoadingPosts] = useState(true);
 
-  const items = [
+  useEffect(() => {
+    loadStudents();
+    loadPosts();
+  }, []);
+
+  const loadStudents = async () => {
+    setLoadingStudents(true);
+    const data = await fetchStudentsStatic();
+    setStudents(data);
+    setLoadingStudents(false);
+  };
+
+  const loadPosts = async () => {
+    setLoadingPosts(true);
+    const data = await fetchPostsServerSide();
+    setPosts(data);
+    setLoadingPosts(false);
+  };
+
+  const studentColumns = [
+    { title: "Name", dataIndex: "name" },
+    { title: "Email", dataIndex: "email" },
+    { title: "Phone", dataIndex: "phone" },
+  ];
+
+  const postColumns = [
+    { title: "Title", dataIndex: "title" },
+    { title: "Body", dataIndex: "body" },
+  ];
+
+  
+  const tabItems = [
     {
       key: "1",
-      label: "📘 Daftar Mahasiswa (Data Statis)",
-      children: <StudentsPage />,
+      label: "Student List (Static)",
+      children: (
+        <div>
+          <Button onClick={loadStudents} style={{ marginBottom: 15 }}>
+            Refresh Static Data
+          </Button>
+
+          {loadingStudents ? (
+            <Spin size="large" />
+          ) : (
+            <Table
+              rowKey="id"
+              dataSource={students}
+              columns={studentColumns}
+              pagination={false}
+            />
+          )}
+        </div>
+      ),
     },
     {
       key: "2",
-      label: "📰 Postingan Terbaru (Server-side)",
+      label: "Recent Posts (Server Side)",
       children: (
         <div>
-          {posts.map((post) => (
-            <div key={post.id} style={{ marginBottom: "20px" }}>
-              <h3>{post.title}</h3>
-              <p>{post.body}</p>
-              <hr />
-            </div>
-          ))}
+          <Button onClick={loadPosts} style={{ marginBottom: 15 }}>
+            Refresh Server Data
+          </Button>
+
+          {loadingPosts ? (
+            <Spin size="large" />
+          ) : (
+            <Table
+              rowKey="id"
+              dataSource={posts}
+              columns={postColumns}
+              pagination={{ pageSize: 5 }}
+            />
+          )}
         </div>
       ),
     },
   ];
 
   return (
-    <main style={{ padding: "20px 40px" }}>
-      <h2>🎓 Daftar Mahasiswa & Postingan Terbaru</h2>
-      <p>
-        Halaman ini menampilkan contoh perbedaan antara pengambilan data statis
-        dan dinamis (server-side).
-      </p>
+    <div style={{ padding: 20 }}>
+      <h1>Students & Posts</h1>
 
-      <div className="ant-tabs">
-        <Tabs defaultActiveKey="1" items={items} />
-      </div>
-    </main>
+      <Tabs defaultActiveKey="1" items={tabItems} />
+    </div>
   );
 }
